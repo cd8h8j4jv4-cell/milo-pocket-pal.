@@ -1,0 +1,9 @@
+{
+  "name": "Milo — Pocket Pal",
+  "short_name": "Milo",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#111421",
+  "theme_color": "#171a2b",
+  "description": "Your little pixel-art AI companion."
+}

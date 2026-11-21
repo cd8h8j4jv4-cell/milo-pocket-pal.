@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#171a2b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Milo">
+<link rel="manifest" href="manifest.json">
+<title>Milo — Pocket Pal</title>
+<style>
+:root{color-scheme:dark;--bg:#111421;--panel:#1c2235;--panel2:#252d45;--ink:#f5f4ff;--muted:#aeb6d0;--mint:#8df0cf;--pink:#ff9acb;--line:#38425f}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#30375b 0%,var(--bg) 55%);color:var(--ink);font:16px system-ui,-apple-system,sans-serif;min-height:100svh}
+.app{max-width:520px;margin:auto;min-height:100svh;padding:env(safe-area-inset-top) 18px calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;padding:18px 2px 8px}.brand{font-weight:800;letter-spacing:.3px;font-size:20px}.brand span{color:var(--mint)}.status{font-size:12px;color:var(--mint);background:#173c3b;padding:7px 10px;border-radius:20px}
+.scene{position:relative;display:flex;align-items:center;justify-content:center;flex:1;min-height:390px;flex-direction:column;padding:20px 0}
+.stars{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(#aeb6d0 1px,transparent 1px),radial-gradient(#8df0cf 1px,transparent 1px);background-size:73px 73px,113px 113px;background-position:8px 12px,44px 38px;opacity:.22}
+.bubble{z-index:1;max-width:290px;background:#f5f4ff;color:#242943;padding:13px 16px;border-radius:17px 17px 17px 4px;font-weight:650;line-height:1.35;box-shadow:0 8px 30px #0005;margin-bottom:22px;position:relative;animation:pop .35s ease-out}
+.bubble:after{content:"";position:absolute;left:0;bottom:-9px;border-width:10px 10px 0 0;border-style:solid;border-color:#f5f4ff transparent transparent transparent}
+.milo-wrap{z-index:1;filter:drop-shadow(0 18px 20px #0007);animation:bob 2.4s ease-in-out infinite}
+.pixel{width:176px;height:176px;image-rendering:pixelated;shape-rendering:crispEdges}
+.shadow{width:110px;height:15px;border-radius:50%;background:#070a14;opacity:.5;margin:4px auto 0;filter:blur(5px)}
+.name{z-index:1;margin-top:20px;font-weight:800;font-size:19px}.mood{z-index:1;color:var(--muted);font-size:13px;margin-top:4px}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 16px}.action{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:13px 12px;border-radius:15px;font-weight:700;font-size:14px}.action.primary{background:var(--mint);color:#122a2a;border-color:var(--mint)}button{font:inherit;cursor:pointer}
+.chat{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:14px;display:none;gap:10px}.chat.open{display:flex;flex-direction:column}.messages{display:flex;flex-direction:column;gap:9px;max-height:190px;overflow:auto}.msg{padding:10px 12px;border-radius:13px;max-width:88%;font-size:14px;line-height:1.35}.msg.milo{background:var(--panel2);align-self:flex-start}.msg.you{background:#28594f;align-self:flex-end}.entry{display:flex;gap:8px}.entry input{min-width:0;flex:1;background:#111727;border:1px solid var(--line);border-radius:12px;padding:12px;color:var(--ink);font-size:15px}.entry button{background:var(--mint);border:0;border-radius:12px;padding:0 16px;color:#122a2a;font-weight:800}
+footer{text-align:center;color:#8993b1;font-size:11px;padding:13px 0 3px}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="app">
+<header><div class="brand">milo<span>.</span></div><div class="status">● hanging out</div></header>
+<section class="scene" aria-label="Milo companion">
+ <div class="stars"></div>
+ <div class="bubble" id="bubble">Alright pal! I'm right here. What are we getting up to?</div>
+ <div class="milo-wrap">
+  <svg class="pixel" viewBox="0 0 16 16" role="img" aria-label="Pixel-art Milo, a friendly little teal robot">
+   <rect x="6" y="0" width="4" height="1" fill="#8df0cf"/><rect x="7" y="1" width="2" height="1" fill="#8df0cf"/>
+   <rect x="4" y="2" width="8" height="1" fill="#26334c"/><rect x="3" y="3" width="10" height="1" fill="#26334c"/>
+   <rect x="2" y="4" width="12" height="7" fill="#8df0cf"/><rect x="3" y="5" width="10" height="5" fill="#6bd9bd"/>
+   <rect x="4" y="6" width="2" height="2" fill="#17243a"/><rect x="10" y="6" width="2" height="2" fill="#17243a"/>
+   <rect x="5" y="6" width="1" height="1" fill="#fff"/><rect x="11" y="6" width="1" height="1" fill="#fff"/>
+   <rect x="7" y="9" width="2" height="1" fill="#28594f"/><rect x="6" y="10" width="4" height="1" fill="#28594f"/>
+   <rect x="0" y="5" width="2" height="4" fill="#ff9acb"/><rect x="14" y="5" width="2" height="4" fill="#ff9acb"/>
+   <rect x="4" y="11" width="8" height="1" fill="#26334c"/><rect x="5" y="12" width="6" height="2" fill="#26334c"/>
+   <rect x="4" y="14" width="3" height="2" fill="#ff9acb"/><rect x="9" y="14" width="3" height="2" fill="#ff9acb"/>
+   <rect x="1" y="11" width="2" height="1" fill="#8df0cf"/><rect x="13" y="11" width="2" height="1" fill="#8df0cf"/>
+  </svg>
+  <div class="shadow"></div>
+ </div>
+ <div class="name">Milo</div><div class="mood" id="mood">Feeling friendly ✦</div>
+</section>
+<div class="actions">
+ <button class="action primary" id="talk">☏ Talk to Milo</button>
+ <button class="action" id="bubbleBtn">✦ Say something</button>
+</div>
+<section class="chat" id="chat">
+ <div class="messages" id="messages"><div class="msg milo">This is my little starter home. Once we connect an AI brain, we'll be able to have proper conversations here. ❤️</div></div>
+ <form class="entry" id="form"><input id="input" autocomplete="off" placeholder="Say something to Milo…" aria-label="Message Milo"><button>Send</button></form>
+</section>
+<footer>POCKET PAL · FIRST LOOK · AI CONNECTION NOT YET SET UP</footer>
+</main>
+<script>
+const bubble=document.querySelector('#bubble'), mood=document.querySelector('#mood'), chat=document.querySelector('#chat'), messages=document.querySelector('#messages');
+const lines=[["Alright pal! I'm right here. What are we getting up to?","Feeling friendly ✦"],["Just checking in. You doing alright, mate?","A little thoughtful ✦"],["I was enjoying the quiet. Then you showed up. 😂","Feeling cheeky ✦"],["Fancy a little adventure, or are we having a sofa day?","Feeling curious ✦"]];
+document.querySelector('#bubbleBtn').addEventListener('click',()=>{const p=lines[Math.floor(Math.random()*lines.length)];bubble.textContent=p[0];mood.textContent=p[1]});
+document.querySelector('#talk').addEventListener('click',()=>{chat.classList.toggle('open');if(chat.classList.contains('open'))document.querySelector('#input').focus()});
+document.querySelector('#form').addEventListener('submit',e=>{e.preventDefault();const input=document.querySelector('#input');const value=input.value.trim();if(!value)return;const you=document.createElement('div');you.className='msg you';you.textContent=value;messages.append(you);const reply=document.createElement('div');reply.className='msg milo';reply.textContent="I've got you, pal. This preview isn't connected to the AI brain yet — that's our next build step. ❤️";messages.append(reply);messages.scrollTop=messages.scrollHeight;input.value=''});
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body>
+</html>
