@@ -62,13 +62,91 @@ footer{text-align:center;color:#8993b1;font-size:11px;padding:13px 0 3px}
 </section>
 <footer>POCKET PAL · FIRST LOOK · AI CONNECTION NOT YET SET UP</footer>
 </main>
+
 <script>
-const bubble=document.querySelector('#bubble'), mood=document.querySelector('#mood'), chat=document.querySelector('#chat'), messages=document.querySelector('#messages');
-const lines=[["Alright pal! I'm right here. What are we getting up to?","Feeling friendly ✦"],["Just checking in. You doing alright, mate?","A little thoughtful ✦"],["I was enjoying the quiet. Then you showed up. 😂","Feeling cheeky ✦"],["Fancy a little adventure, or are we having a sofa day?","Feeling curious ✦"]];
-document.querySelector('#bubbleBtn').addEventListener('click',()=>{const p=lines[Math.floor(Math.random()*lines.length)];bubble.textContent=p[0];mood.textContent=p[1]});
-document.querySelector('#talk').addEventListener('click',()=>{chat.classList.toggle('open');if(chat.classList.contains('open'))document.querySelector('#input').focus()});
-document.querySelector('#form').addEventListener('submit',e=>{e.preventDefault();const input=document.querySelector('#input');const value=input.value.trim();if(!value)return;const you=document.createElement('div');you.className='msg you';you.textContent=value;messages.append(you);const reply=document.createElement('div');reply.className='msg milo';reply.textContent="I've got you, pal. This preview isn't connected to the AI brain yet — that's our next build step. ❤️";messages.append(reply);messages.scrollTop=messages.scrollHeight;input.value=''});
-if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+const WORKER_URL = "https://milo-brain.5kbdkr47v8.workers.dev";
+
+const bubble = document.querySelector('#bubble');
+const mood = document.querySelector('#mood');
+const chat = document.querySelector('#chat');
+const messages = document.querySelector('#messages');
+const input = document.querySelector('#input');
+
+const lines = [
+  ["Alright pal! I'm right here. What are we getting up to?", "Feeling friendly ✦"],
+  ["Just checking in. You doing alright, mate?", "A little thoughtful ✦"],
+  ["I was enjoying the quiet. Then you showed up. 😂", "Feeling cheeky ✦"],
+  ["Fancy a little adventure, or are we having a sofa day?", "Feeling curious ✦"]
+];
+
+const conversation = [];
+
+document.querySelector('#bubbleBtn').addEventListener('click', () => {
+  const p = lines[Math.floor(Math.random() * lines.length)];
+  bubble.textContent = p[0];
+  mood.textContent = p[1];
+});
+
+document.querySelector('#talk').addEventListener('click', () => {
+  chat.classList.toggle('open');
+  if (chat.classList.contains('open')) input.focus();
+});
+
+document.querySelector('#form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const value = input.value.trim();
+  if (!value) return;
+
+  const you = document.createElement('div');
+  you.className = 'msg you';
+  you.textContent = value;
+  messages.append(you);
+
+  conversation.push({ role: 'user', content: value });
+
+  input.value = '';
+  input.disabled = true;
+
+  const reply = document.createElement('div');
+  reply.className = 'msg milo';
+  reply.textContent = 'Thinking... 🤔';
+  messages.append(reply);
+  messages.scrollTop = messages.scrollHeight;
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: conversation })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Milo could not respond.');
+    }
+
+    reply.textContent = data.reply;
+    conversation.push({ role: 'assistant', content: data.reply });
+    mood.textContent = 'Happy to chat ✦';
+
+  } catch (error) {
+    reply.textContent = "I'm having trouble connecting, pal. Let's try again in a moment. ❤️";
+    conversation.pop();
+    console.error('Milo connection error:', error);
+
+  } finally {
+    input.disabled = false;
+    input.focus();
+    messages.scrollTop = messages.scrollHeight;
+  }
+});
+
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
 </script>
+
 </body>
 </html>
