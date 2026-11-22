@@ -124,15 +124,16 @@ document.querySelector('#form').addEventListener('submit', async (e) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || 'Milo could not respond.');
-    }
+     throw new Error(
+  `${data.error || 'Milo failed'} | HTTP ${data.upstreamStatus || response.status} | ${data.details || 'No details returned'}`
+);
 
     reply.textContent = data.reply;
     conversation.push({ role: 'assistant', content: data.reply });
     mood.textContent = 'Happy to chat ✦';
 
   } catch (error) {
-    reply.textContent = "I'm having trouble connecting, pal. Let's try again in a moment. ❤️";
+    reply.textContent = error.message;
     conversation.pop();
     console.error('Milo connection error:', error);
 
