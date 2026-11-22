@@ -63,6 +63,7 @@ footer{text-align:center;color:#8993b1;font-size:11px;padding:13px 0 3px}
 <footer>POCKET PAL · FIRST LOOK · AI CONNECTION NOT YET SET UP</footer>
 </main>
 
+
 <script>
 const WORKER_URL = "https://milo-brain.5kbdkr47v8.workers.dev";
 
@@ -112,6 +113,7 @@ document.querySelector('#form').addEventListener('submit', async (e) => {
   reply.className = 'msg milo';
   reply.textContent = 'Thinking... 🤔';
   messages.append(reply);
+
   messages.scrollTop = messages.scrollHeight;
 
   try {
@@ -124,9 +126,10 @@ document.querySelector('#form').addEventListener('submit', async (e) => {
     const data = await response.json();
 
     if (!response.ok) {
-     throw new Error(
-  `${data.error || 'Milo failed'} | HTTP ${data.upstreamStatus || response.status} | ${data.details || 'No details returned'}`
-);
+      throw new Error(
+        `${data.error || 'Milo failed'} | HTTP ${data.upstreamStatus || response.status} | ${data.details || 'No details returned'}`
+      );
+    }
 
     reply.textContent = data.reply;
     conversation.push({ role: 'assistant', content: data.reply });
@@ -148,6 +151,7 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
 </script>
+
 
 </body>
 </html>
